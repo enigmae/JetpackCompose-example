@@ -4,68 +4,38 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
+
+class TaskDao {
+    private var _tasks: List<Task> = listOf(Task(name = "Buy milk", complete = true))
+
+    fun insert(task: Task) {
+        val newTasks = mutableListOf<Task>()
+        newTasks.add(task)
+        newTasks.addAll(_tasks)
+        _tasks = newTasks
+    }
+
+    fun getAll() = _tasks
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val taskDao = TaskDao()
         setContent {
-            var tasks by remember {mutableStateOf(listOf<Task>())}
+            var tasks = taskDao.getAll()
             Column {
                 TaskEditor(Task(name = "", complete = false)) {
-                    val newTasks = mutableListOf<Task>()
-                    newTasks.add(it)
-                    newTasks.addAll(tasks)
-                    tasks = newTasks
+                    taskDao.insert(it)
                 }
-                Column {
-                    for (task in tasks) {
-                        Text(task.name)
-                    }
-                }
+                TaskList(tasks)
             }
         }
     }
 }
 
-data class Task(var name: String, var complete: Boolean)
 
-@Composable
-fun TaskEditor(task: Task, onTaskChange: (Task) -> Unit) {
-    var name by rememberSaveable(task.name) { mutableStateOf(task.name) }
-    var complete by rememberSaveable(task.complete) { mutableStateOf(task.complete) }
-    Column {
-        TextField(
-            value = name,
-            modifier = Modifier.fillMaxWidth(),
-            onValueChange = {
-                name = it
-            },
-        )
-        Row {
-            Checkbox(
-                checked = complete,
-                onCheckedChange = {
-                    complete = it
-                },
-            )
-            Text("Complete?")
-        }
-        Button(onClick = {
-            onTaskChange(task.copy(name = name, complete = complete))
-            name = ""
-            complete = false
-        }) {
-            Text("SAVE")
-        }
-    }
-}
