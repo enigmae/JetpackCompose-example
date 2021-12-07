@@ -18,7 +18,9 @@ class MainActivity : ComponentActivity() {
 
             NavHost(navController = navController, startDestination = "/tasks") {
                 composable("/tasks") {
-                    TasksScreen(vmf)
+                    TasksScreen(vmf, onAddTask = {
+                        navController.navigate("/tasks/new")
+                    })
                 }
                 composable("/tasks/new") {
                     AddTaskScreen(vmf)
