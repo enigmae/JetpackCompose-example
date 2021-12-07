@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +20,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskEditor() {
+    var name = "Buy bread"
     Column {
         TextField(
-            value = "Buy bread",
-            onValueChange = {},
+            value = name,
+            onValueChange = {
+                            name = it
+            },
         )
         Row {
             Checkbox(
