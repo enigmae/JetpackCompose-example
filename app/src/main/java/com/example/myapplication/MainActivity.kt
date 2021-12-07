@@ -19,7 +19,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TaskEditor(Task(name = "Buy fish", complete = true))
+            var task by remember {mutableStateOf(Task(name = "", complete = false))}
+            Column {
+                TaskEditor(Task(name = "Buy fish", complete = true)) {
+                    task = it
+                }
+                Text("name: ${task.name}")
+
+            }
         }
     }
 }
@@ -27,7 +34,7 @@ class MainActivity : ComponentActivity() {
 data class Task(var name: String, var complete: Boolean)
 
 @Composable
-fun TaskEditor(task: Task) {
+fun TaskEditor(task: Task, onTaskChange: (Task) -> Unit) {
     var name by rememberSaveable(task.name) { mutableStateOf(task.name) }
     var complete by rememberSaveable(task.complete) { mutableStateOf(task.complete) }
     Column {
@@ -47,7 +54,9 @@ fun TaskEditor(task: Task) {
             )
             Text("Complete?")
         }
-        Button(onClick = {}) {
+        Button(onClick = {
+            onTaskChange(task.copy(name = name, complete = complete))
+        }) {
             Text("SAVE")
         }
     }
