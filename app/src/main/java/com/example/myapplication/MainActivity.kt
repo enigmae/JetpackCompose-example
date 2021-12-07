@@ -9,6 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,20 +24,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskEditor() {
-    var name = remember { mutableStateOf("Buy bread") }
-    var complete = remember { mutableStateOf(true) }
+    var name by remember { mutableStateOf("Buy bread") }
+    var complete by remember { mutableStateOf(true) }
     Column {
         TextField(
-            value = name.value,
+            value = name,
             onValueChange = {
-                name.value = it
+                name = it
             },
         )
         Row {
             Checkbox(
-                checked = complete.value,
+                checked = complete,
                 onCheckedChange = {
-                    complete.value = it
+                    complete = it
                 },
             )
             Text("Complete?")
