@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,12 +22,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskEditor() {
-    var name = "Buy bread"
+    var name = remember { mutableStateOf("Buy bread") }
     Column {
         TextField(
-            value = name,
+            value = name.value,
             onValueChange = {
-                            name = it
+                name.value = it
             },
         )
         Row {
