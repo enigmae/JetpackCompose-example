@@ -18,6 +18,16 @@ class AddTaskScreenViewModel(val taskDao: TaskDao): ViewModel() {
     }
 }
 
+class EditTaskScreenViewModel(val taskDao: TaskDao): ViewModel() {
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskDao.update(task)
+        }
+    }
+
+    fun getTask(taskId: Long) = taskDao.get(taskId)
+}
+
 class MyViewModelFactory(val taskDao: TaskDao): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TasksScreenViewModel::class.java)) {
@@ -25,6 +35,9 @@ class MyViewModelFactory(val taskDao: TaskDao): ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(AddTaskScreenViewModel::class.java)) {
             return AddTaskScreenViewModel(taskDao) as T
+        }
+        if (modelClass.isAssignableFrom(EditTaskScreenViewModel::class.java)) {
+            return EditTaskScreenViewModel(taskDao) as T
         }
         throw IllegalArgumentException("Cannot find a viewmodel")
     }

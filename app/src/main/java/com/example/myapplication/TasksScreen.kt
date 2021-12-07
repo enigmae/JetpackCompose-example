@@ -9,7 +9,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun TasksScreen(vmf: MyViewModelFactory, onAddTask: () -> Unit) {
+fun TasksScreen(vmf: MyViewModelFactory, onAddTask: () -> Unit, onClickTask: (Task) -> Unit) {
     val vm: TasksScreenViewModel = viewModel(factory = vmf)
     val tasks by vm.getTasks().observeAsState()
     Column {
@@ -17,7 +17,7 @@ fun TasksScreen(vmf: MyViewModelFactory, onAddTask: () -> Unit) {
             Text("ADD TASK")
         }
         tasks?.let {
-            TaskList(it)
+            TaskList(it, onClickTask = onClickTask)
         }
     }
 }
@@ -25,9 +25,20 @@ fun TasksScreen(vmf: MyViewModelFactory, onAddTask: () -> Unit) {
 @Composable
 fun AddTaskScreen(vmf: MyViewModelFactory, onTaskSaved: () -> Unit) {
     val vm: AddTaskScreenViewModel = viewModel(factory = vmf)
-    Column {
-        TaskEditor(Task(name = "", complete = false)) {
-            vm.addTask(it)
+    TaskEditor(Task(name = "", complete = false)) {
+        vm.addTask(it)
+        onTaskSaved()
+    }
+}
+
+
+@Composable
+fun EditTaskScreen(vmf: MyViewModelFactory, taskId: Long, onTaskSaved: () -> Unit) {
+    val vm: EditTaskScreenViewModel = viewModel(factory = vmf)
+    val task by vm.getTask(taskId).observeAsState()
+    task?.let {
+        TaskEditor(it) {
+            vm.updateTask(it)
             onTaskSaved()
         }
     }
