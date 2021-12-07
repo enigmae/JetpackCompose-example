@@ -27,9 +27,11 @@ fun MainNavigation(vmf: MyViewModelFactory) {
             }
         }
         composable("/tasks/new") {
-            AddTaskScreen(vmf, onTaskSaved = {
-                navController.navigate("/tasks")
-            })
+            MyScaffold(title = "Add Task") {
+                AddTaskScreen(vmf, onTaskSaved = {
+                    navController.navigate("/tasks")
+                })
+            }
         }
         composable(
             "/tasks/{taskId}",
@@ -39,9 +41,11 @@ fun MainNavigation(vmf: MyViewModelFactory) {
         ) {
             it.arguments?.let {
                 val taskId = it.get("taskId") as Long
-                EditTaskScreen(vmf, taskId = taskId, onTaskSaved = {
-                    navController.navigate("/tasks")
-                })
+                MyScaffold(title = "Add Task") {
+                    EditTaskScreen(vmf, taskId = taskId, onTaskSaved = {
+                        navController.navigate("/tasks")
+                    })
+                }
             }
         }
     }
