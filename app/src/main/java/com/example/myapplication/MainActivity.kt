@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TaskEditor() {
     var name = remember { mutableStateOf("Buy bread") }
+    var complete = remember { mutableStateOf(true) }
     Column {
         TextField(
             value = name.value,
@@ -32,8 +33,10 @@ fun TaskEditor() {
         )
         Row {
             Checkbox(
-                checked = true,
-                onCheckedChange = {},
+                checked = complete.value,
+                onCheckedChange = {
+                    complete.value = it
+                },
             )
             Text("Complete?")
         }
