@@ -30,5 +30,6 @@ fun TaskEditor() {
             checked = true,
             onCheckedChange = {},
         )
+        Text("Complete?")
     }
 }
