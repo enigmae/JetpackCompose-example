@@ -28,3 +28,9 @@ fun TaskEditor() {
         Text("Complete!")
     }
 }
+
+@Preview
+@Composable
+fun PreviewTaskEditor() {
+    TaskEditor()
+}
