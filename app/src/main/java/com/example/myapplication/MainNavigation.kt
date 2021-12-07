@@ -1,9 +1,10 @@
 package com.example.myapplication
 
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,11 +17,13 @@ fun MainNavigation(vmf: MyViewModelFactory) {
 
     NavHost(navController = navController, startDestination = "/tasks") {
         composable("/tasks") {
-            MyScaffold(title = "Tasks!") {
-                TasksScreen(vmf, onAddTask = {
+            MyScaffold(title = "Tasks!",
+                fabIcon = Icons.Filled.Add,
+                onFabClick = {
                     navController.navigate("/tasks/new")
-                },
-                    onClickTask = {
+                }
+            ) {
+                TasksScreen(vmf, onClickTask = {
                         navController.navigate("/tasks/${it.id}")
                     }
                 )
@@ -41,7 +44,7 @@ fun MainNavigation(vmf: MyViewModelFactory) {
         ) {
             it.arguments?.let {
                 val taskId = it.get("taskId") as Long
-                MyScaffold(title = "Add Task") {
+                MyScaffold(title = "Edit Task") {
                     EditTaskScreen(vmf, taskId = taskId, onTaskSaved = {
                         navController.navigate("/tasks")
                     })
@@ -54,6 +57,8 @@ fun MainNavigation(vmf: MyViewModelFactory) {
 @Composable
 fun MyScaffold(
     title: String,
+    fabIcon: ImageVector? = null,
+    onFabClick: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -61,6 +66,13 @@ fun MyScaffold(
             TopAppBar(title = {
                 Text(title)
             })
+        },
+        floatingActionButton = {
+            fabIcon?.let {
+                FloatingActionButton(onClick = onFabClick) {
+                    Icon(it, "Fab icon")
+                }
+            }
         }
     ) {
         content()
