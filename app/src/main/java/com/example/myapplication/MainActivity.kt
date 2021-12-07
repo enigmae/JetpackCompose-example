@@ -19,13 +19,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var task by remember {mutableStateOf(Task(name = "", complete = false))}
+            var tasks by remember {mutableStateOf(listOf<Task>())}
             Column {
                 TaskEditor(Task(name = "", complete = false)) {
-                    task = it
+                    val newTasks = mutableListOf<Task>()
+                    newTasks.add(it)
+                    newTasks.addAll(tasks)
+                    tasks = newTasks
                 }
-                Text("name: ${task.name}")
-
+                Column {
+                    for (task in tasks) {
+                        Text(task.name)
+                    }
+                }
             }
         }
     }
