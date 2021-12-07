@@ -24,7 +24,7 @@ fun TaskItem(task: Task) {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
-            modifier = Modifier.fillMaxWidth(0.95f),
+            modifier = Modifier.fillMaxWidth(0.9f),
             text = task.name,
         )
         Text(if (task.complete) "  ✓" else "")
