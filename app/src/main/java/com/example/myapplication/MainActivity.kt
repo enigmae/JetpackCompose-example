@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -24,13 +25,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TaskEditor() {
     Column {
-        Text("Buy bread")
-        Text("Complete!")
+        TextField(
+            value = "Buy bread",
+            onValueChange = {},
+        )
+        Text("Complete!!!!!")
     }
-}
-
-@Preview
-@Composable
-fun PreviewTaskEditor() {
-    TaskEditor()
 }
