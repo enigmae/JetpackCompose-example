@@ -23,7 +23,9 @@ class MainActivity : ComponentActivity() {
                     })
                 }
                 composable("/tasks/new") {
-                    AddTaskScreen(vmf)
+                    AddTaskScreen(vmf, onTaskSaved = {
+                        navController.navigate("/tasks")
+                    })
                 }
             }
         }
