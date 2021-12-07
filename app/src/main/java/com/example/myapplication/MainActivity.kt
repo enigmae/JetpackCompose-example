@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             var task by remember {mutableStateOf(Task(name = "", complete = false))}
             Column {
-                TaskEditor(Task(name = "Buy fish", complete = true)) {
+                TaskEditor(Task(name = "", complete = false)) {
                     task = it
                 }
                 Text("name: ${task.name}")
